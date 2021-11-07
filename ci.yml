@@ -1,0 +1,64 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+        mongodb-version: ['4.0', '4.2', '4.4']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.6.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+      - name: Setup RabbitMQ
+        uses: getong/rabbitmq-action@v1.2
+        with:
+          rabbitmq version: '3.8.2-management-alpine'
+          host port: 5672
+          rabbitmq user: 'user'
+          rabbitmq password: 'noBahC3e'
+          rabbitmq vhost: 'vhost_name'
+      - name: Create .env file
+        run: |
+          cd Backend && touch .env
+          echo JWT_SECRET=${{secrets.JWT_SECRET}} >> .env
+          echo MONGO_DB_URL=${{secrets.MONGO_DB_URL}} >> .env
+          echo PORT=${{secrets.PORT}} >> .env
+          echo CLAIM_API=${{secrets.CLAIM_API}} >> .env
+          echo BILLING_CLIENT_ID=${{secrets.BILLING_CLIENT_ID}} >> .env
+          echo BILLING_CLIENT_SECRET=${{secrets.BILLING_CLIENT_SECRET}} >> .env
+          echo CLOUDAMQP_URL=${{secrets.CLOUDAMQP_URL}} >> .env
+          cat .env
+      - name: Run install and Tests
+        run: |
+          cd Backend && yarn install
+          yarn run dev & sleep 10 && curl http://localhost:6000 && yarn test
+      - name: Set github credentials
+        run: |
+          ls -l
+          git config user.email ${{secrets.USER_EMAIL}}
+          git config user.name ${{secrets.USER_NAME}}
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to dev
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_AUTH_TOKEN}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+        env:
+           HD_YARN_PRODUCTION: false
