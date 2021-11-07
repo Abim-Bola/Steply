@@ -6,8 +6,9 @@
         "@tests/*": ["test/*"],
         "@modules/*": ["modules/*"],
         "@shared/*": ["shared/*"],
-        "@config/*": ["config/*"],
+        "@config/*": ["src/config/*"],
         "@validations/*": ["validations/*"],
+        "@models/*": ["src/models/*"],
         "@sockets/*": ["sockets/*"],
         "@services/*": ["services/*"],
       }
