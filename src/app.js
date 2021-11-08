@@ -1,7 +1,7 @@
 /* eslint-disable arrow-body-style */
 import express from "express";
 // import const from "@controller/user.js";
-import env from "@config/environment";
+import util from "@utils/environment";
 import cors from "cors";
 // eslint-disable-next-line import/extensions
 
