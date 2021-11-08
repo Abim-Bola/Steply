@@ -12,7 +12,7 @@ app.get("/", async (req, res) => {
   return res.json({ message: "Hello King, I love you." });
 });
 
-console.log(config.get("password"));
+console.log(config.get("mail.password"));
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => console.log(`Listening on port ${port}...`));
 
