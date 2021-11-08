@@ -3,10 +3,11 @@
       "baseUrl": "./src",
       "paths": {
         "@utils/*": ["utils/*"],
+        "@controller/*": ["controller/*"],
         "@tests/*": ["test/*"],
         "@modules/*": ["modules/*"],
         "@shared/*": ["shared/*"],
-        "@config/*": ["src/config/*"],
+        "@config/*": ["config/*"],
         "@validations/*": ["validations/*"],
         "@models/*": ["src/models/*"],
         "@sockets/*": ["sockets/*"],
