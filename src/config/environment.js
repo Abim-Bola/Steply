@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 process.env.NODE_ENV = "development";
 const env = {
-  DATABASE_URL: process.env.DATABASE_URL,
+  MONGO_DB_URL: process.env.MONGO_DB_URL,
   JWTSECRET: process.env.JWTSECRET,
   getEnv() {
     if (process.env.NODE_ENV === "development") {

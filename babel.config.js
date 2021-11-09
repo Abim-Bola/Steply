@@ -1,42 +1,42 @@
-const TARGETS_NODE = "12.13.0"
-const CORE_JS_VERSION = "3.6"
+const TARGETS_NODE = "12.13.0";
+const CORE_JS_VERSION = "3.6";
 
 module.exports = {
-	presets: [
-		[
-			"@babel/preset-env",
-			{
-				targets: { node: TARGETS_NODE },
-				useBuiltIns: "usage",
-				corejs: {
-					version: CORE_JS_VERSION,
-					proposals: true,
-				},
-			},
-		],
-	],
-	plugins: [
-		[
-			"babel-plugin-module-resolver",
-			{
-				alias: {
-					"@config": "./src/config",
-					"@controllers": "./src/controller",
-					"@models": "./src/models",
-					"@services": "./src/services",
-					"@utils": "./src/utils",
-				},
-			},
-		],
-		["@babel/plugin-proposal-class-properties", { loose: true }],
-		[
-			"@babel/plugin-transform-runtime",
-			{
-				corejs: { version: 3, proposals: true },
-				version: "^7.8.3",
-			},
-		],
-        ["@babel/plugin-proposal-private-methods", { loose: true }],
-        ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
-	],
-}
+  presets: [
+    [
+      "@babel/preset-env",
+      {
+        targets: { node: TARGETS_NODE },
+        useBuiltIns: "usage",
+        corejs: {
+          version: CORE_JS_VERSION,
+          proposals: true,
+        },
+      },
+    ],
+  ],
+  plugins: [
+    [
+      "babel-plugin-module-resolver",
+      {
+        alias: {
+          "@config": "./src/config",
+          "@controllers": "./src/controller",
+          "@models": "./src/models",
+          "@services": "./src/services",
+          "@utils": "./src/utils",
+        },
+      },
+    ],
+    ["@babel/plugin-proposal-class-properties", { loose: true }],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        corejs: { version: 3, proposals: true },
+        version: "^7.8.3",
+      },
+    ],
+    ["@babel/plugin-proposal-private-methods", { loose: true }],
+    ["@babel/plugin-proposal-private-property-in-object", { loose: true }]
+  ],
+};

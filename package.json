@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node app.js",
-		"test": "cross-env NODE_ENV=test mocha ./test/**/*.spec.js -r @babel/register --timeout=100000 --exit",
-		"test:watch": "cross-env NODE_ENV=test mocha ./test/**/*.spec.js -r @babel/register --timeout=100000 --watch --exit",
-		"clean": "rimraf dist",
-		"build": "npm run clean && babel src -d dist",
-		"start": "cd dist && node app.js",
+    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/app.js",
+    "test": "cross-env NODE_ENV=test mocha ./test/**/*.spec.js -r @babel/register --timeout=100000 --exit",
+    "test:watch": "cross-env NODE_ENV=test mocha ./test/**/*.spec.js -r @babel/register --timeout=100000 --watch --exit",
+    "clean": "rimraf dist",
+    "build": "npm run clean && babel src -d dist",
+    "start": "cd dist && node app.js",
     "lint": "eslint src/  --fix"
   },
   "keywords": [],
@@ -41,7 +41,7 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.25.2",
     "faker": "^5.5.3",
-		"prettier": "^2.3.1",
-		"rimraf": "^3.0.2"
+    "prettier": "^2.3.1",
+    "rimraf": "^3.0.2"
   }
 }

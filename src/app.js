@@ -9,12 +9,10 @@ const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-// console.log(env);
-process.env.NODE_ENV = "development";
+
 app.get("/", async (req, res) => {
   return res.json({ message: "Hello King, I love you." });
 });
-console.log("🚀 ~ file: environment.js ~ line 9 ~ process.env.NODE_ENV", process.env.NODE_ENV);
 
 // let configDetails;
 // if (process.env.NODE_ENV === "development") {
@@ -22,9 +20,7 @@ console.log("🚀 ~ file: environment.js ~ line 9 ~ process.env.NODE_ENV", proce
 //   console.log("🚀 ~ file: app.js ~ line 18 ~ dbConfig", dbConfig);
 // }
 
-// console.log(configObject.host);
-
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 6000;
 const server = app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 export default app;
