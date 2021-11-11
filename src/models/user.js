@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    password:{
+        type: String,
+        required: true
+    },
     email:{
         type: String,
         required: true
@@ -48,4 +52,5 @@ userSchema.methods.generateAuthToken = function () {
 }
 
 const User = mongoose.model('User', userSchema);
-exports.User = User;
+
+export default User;
