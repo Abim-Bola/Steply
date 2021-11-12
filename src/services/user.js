@@ -13,7 +13,7 @@ const userServices = {
     }
   },
   saveUser: async ({ ...params }) => {
-    console.log("🚀 ~ file: user.js ~ line 10 ~ saveUser: ~ ...params", ...params);
+    console.log("🚀 ~ file: user.js ~ line 10 ~ saveUser: ~ ...params",  params );
     try {
       const user = new User({ ...params });
       await user.save();

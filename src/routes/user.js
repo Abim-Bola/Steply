@@ -1,12 +1,10 @@
 /* eslint-disable max-len */
-import
-{ authenticationController }
-from "@controllers/user";
+import { authenticationController } from "@controllers/user"
 
-const express = require("express");
+const { Router } = require("express")
 
-const router = express.Router();
+const router = Router()
 
-router.post("/signup", authenticationController.signup);
+router.post("/signup", authenticationController.signup)
 
-export default router;
+export default router
