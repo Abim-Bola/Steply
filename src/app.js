@@ -1,8 +1,8 @@
 /* eslint-disable arrow-body-style */
 import express from "express";
-// import const from "@controller/user.js";
-import util from "@utils/environment";
+import routes from "@startup/routes";
 import cors from "cors";
+import db from "@startup/db";
 // eslint-disable-next-line import/extensions
 
 const app = express();
@@ -14,11 +14,8 @@ app.get("/", async (req, res) => {
   return res.json({ message: "Hello King, I love you." });
 });
 
-// let configDetails;
-// if (process.env.NODE_ENV === "development") {
-//   const { dbConfig } = config.get("production");
-//   console.log("🚀 ~ file: app.js ~ line 18 ~ dbConfig", dbConfig);
-// }
+db();
+routes(app);
 
 const port = process.env.PORT || 6000;
 const server = app.listen(port, () => console.log(`Listening on port ${port}...`));
