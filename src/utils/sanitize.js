@@ -1,3 +1,4 @@
+import _ from "lodash";
 /* eslint-disable no-underscore-dangle */
 module.exports.sanitize = data => {
   try {

@@ -1,17 +1,10 @@
 import bcrypt from "bcrypt";
+import zxcvbn from "zxcvbn";
 
 const passwordService = {
-  hash: async password => {
+  passwordChecker: async (password, firstName) => {
     try {
-      return bcrypt.hash(password, 10);
-    } catch (error) {
-      return error;
-    }
-  },
-
-  compare: async (password, oldPassword) => {
-    try {
-      bcrypt.compare(password, oldPassword);
+      return await zxcvbn(password, firstName);
     } catch (error) {
       return error;
     }

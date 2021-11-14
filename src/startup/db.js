@@ -7,6 +7,7 @@ module.exports = () => {
     const connection = mongoose.connect(db, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      autoIndex: false
     });
     if (connection) console.log("Connected to database successfully");
   } catch (error) {
