@@ -1,4 +1,4 @@
-import User from "@models/user";
+import User from "infra/database/models/user";
 
 const userServices = {
   findUser: async email => {

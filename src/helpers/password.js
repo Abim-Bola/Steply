@@ -2,9 +2,9 @@ import bcrypt from "bcrypt";
 import zxcvbn from "zxcvbn";
 
 const passwordService = {
-  passwordChecker: async (password, firstName) => {
+  passwordStrengthChecker: async (password, first_name) => {
     try {
-      return await zxcvbn(password, firstName);
+      return zxcvbn(password, first_name);
     } catch (error) {
       return error;
     }
