@@ -1,5 +1,7 @@
 import User from "infra/database/models/user";
 import Unauthorized from "interfaces/errors/Unauthorized";
+import { asValue, Lifetime } from "awilix";
+import container  from "container";
 import  Token  from "helpers/jwt";
 
 class Authentication {
@@ -19,12 +21,20 @@ class Authentication {
             return user;
     }
      async userLoggedin(req, res, next) {
+         try {
             const user = await this.getUser(req);
             if (!user) {
                 throw new Unauthorized("Not allowed access to this resource");
             }
+            container.register({
+                currentUser: asValue(user),
+              });
             req.user = user;
-            next();
+            next(); 
+         } catch (error) {
+          throw error
+         }
+            
     }
 }
 

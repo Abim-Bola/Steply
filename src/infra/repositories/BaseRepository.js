@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 class BaseRepository {
     constructor({ Model }) {
-        console.log('>>>>> model', Model);
         this.Collection = Model
 
     }

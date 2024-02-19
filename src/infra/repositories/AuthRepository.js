@@ -2,7 +2,10 @@ import BaseRepository from "infra/repositories/BaseRepository"
 import { sanitize } from "helpers/sanitize"
 import passwordService from "helpers/password"
 import ConflictError from "interfaces/errors/ConflictError"
+import HttpStatus from "http-status-codes";
 import ResourceNotFoundError from "interfaces/errors/ResourceNotFoundError"
+import Password from "helpers/password";
+import JWT from "helpers/jwt";
 import InvalidPayloadError from "interfaces/errors/InvalidPayloadError"
 import User from "infra/database/models/user"
 
@@ -24,7 +27,7 @@ class UserRepository extends BaseRepository {
     const saveUser = await this.create({
       ...payload,
     })
-    saveUser.testing()
+    // saveUser.testing()
     return sanitize(saveUser)
   }
 
@@ -33,16 +36,16 @@ class UserRepository extends BaseRepository {
       const { password } = payload
       const findUser = await this.find({ email: payload.email }, undefined, undefined)
       if (!findUser) {
-        return new ResourceNotFoundError("User does not exist")
+        throw new ResourceNotFoundError("User does not exist")
       }
-      // const findpassword = await findUser.comparePassword(password);
-      // if(!findpassword) {
-      //   return new InvalidPayloadError("Wrong password");
-      // }
-      const token = findUser.generateAuthToken()
-      return token
+      const findpassword = await Password.compare(password, findUser.password);
+      if(!findpassword) {
+        throw new  InvalidPayloadError("Wrong password", HttpStatus.UNAUTHORIZED);
+      }
+      const token = JWT.generateAuthToken(findUser)
+      return {token}
     } catch (error) {
-      return error
+      throw error
     }
   }
   async changePassword(payload, user) {
