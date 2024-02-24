@@ -34,6 +34,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.0.12",
     "mongoose-data-seed": "^2.1.6",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.14",
     "redis": "^4.6.12",
     "ts-node-dev": "^2.0.0",

@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import AuthController from "interfaces/controllers/AuthController";
-import Authentication  from "interfaces/middlewares/auth";
 import { signupValidationSchema, loginValidationSchema } from "interfaces/validations/auth"
 
 const { Router } = require("express");

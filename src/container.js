@@ -4,13 +4,15 @@
 * application without the need to import them directly
 */
 
-import { createContainer, InjectionMode, Lifetime, asClass } from 'awilix'
+import { createContainer, InjectionMode, Lifetime, asClass, asFunction } from 'awilix'
+import RedisClient from './services/redis'
 import app from './app'
-
+const redisClient = new RedisClient
 const container = createContainer()
 
- container.register({
+  container.register({
     injectionMode: InjectionMode.PROXY,
+    redisClient: asClass(RedisClient),
   })
 
   container.loadModules(

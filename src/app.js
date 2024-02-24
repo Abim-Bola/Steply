@@ -7,29 +7,31 @@ import express from "express";
 import { createContainer, asClass, InjectionMode, Lifetime, asFunction, asValue } from "awilix";
 import { createClient } from 'redis';
 import cors from "cors";
+import morgan from "morgan";
 import db from "./startup/db.js";
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import routes from "./interfaces/v1/router.js";
-import RedisClient from './services/redis'
-import container from './container'
+import RedisClient from './services/redis.js';
+import container from './container';
+
 
 //create a container file
 //do the same thing in app,
 //call the export to register new var
 //import the container and access the var. 
 const app = express();
-
-const conatienr = createContainer()
 app.use((req, res, next) => {
   next();
 });
 require("./startup/db")();
 require("./interfaces/v1/router")(app);
 // eslint-disable-next-line import/extensions
-
+ container.cradle.redisClient.isAlive(),
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(morgan('tiny'));
+
 const PORT = 6379
 
 app.get("/", async (req, res) => {

@@ -9,18 +9,23 @@ class AuthController {
   constructor() {}
 
   async signupUser(req, res) {
-    const payload = pick(req.body, [
-      "first_name",
-      "last_name",
-      "email",
-      "company_name",
-      "job_title",
-      "password",
-      "confirm_password",
-    ])
-    const response = await AuthRepository.signup(payload)
-    const message = response.message ? response.message : "Account Created"
-    return Response.send(res, response, HttpStatus.CREATED, message)
+    try {
+      const payload = pick(req.body, [
+        "first_name",
+        "last_name",
+        "email",
+        "company_name",
+        "job_title",
+        "password",
+        "confirm_password",
+      ])
+      const response = await AuthRepository.signup(payload)
+      const message = response.message ? response.message : "Account Created"
+      return Response.getResponseHandler(res).onSuccess(response, message,HttpStatus.CREATED)
+    } catch (error) {
+      return Response.getResponseHandler(res).onError(error)
+    }
+   
   }
 
   async loginUser(req, res) {

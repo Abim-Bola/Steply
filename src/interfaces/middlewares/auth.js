@@ -7,9 +7,7 @@ import  Token  from "helpers/jwt";
 class Authentication {
     constructor({ User }) {
         this.User = User;
-        console.log(this)
     }
-
      async getUser(req) {
             if (!req.headers.authorization) {
                 return null;
