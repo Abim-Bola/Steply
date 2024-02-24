@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
     },
     job_title: {
       type: String,
-      required: true,
+      required: false,
     },
     token: {
       type: String,
@@ -48,6 +48,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// These are database methods which can also be abstracted to a helper file. 
 userSchema.pre("save", async function(next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 8);

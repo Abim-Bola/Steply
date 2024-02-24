@@ -1,9 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import env from '../config/config'
 require("dotenv").config();
 
 module.exports = () => {
   try {
-    const db = process.env.MONGO_DB_URL;
+    const db = env.getEnv().MONGO_DB_URL
+    mongoose.set('strictQuery', true)
     const connection = mongoose.connect(db, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -15,3 +17,4 @@ module.exports = () => {
     process.exit(1);
   }
 };
+

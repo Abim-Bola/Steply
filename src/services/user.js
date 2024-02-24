@@ -6,7 +6,6 @@ const userServices = {
       const user = await User.findOne({ email });
       return user;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   },

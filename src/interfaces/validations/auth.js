@@ -5,6 +5,7 @@ export const signupValidationSchema = (req, res, next) => {
       email: Joi.string(),
       job_title: Joi.string(),
       company_name: Joi.string(),
+      confirm_password: Joi.string(),
       first_name: Joi.string(),
       last_name: Joi.string(),
       password: Joi.string(),

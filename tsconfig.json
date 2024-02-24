@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    // "target": "esnext",
+    // "module": "commonjs",
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es2017", "esnext", "dom"],
+    "allowJs": true,
+    "checkJs": false,
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": false,
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    "forceConsistentCasingInFileNames": true, /* Disallow inconsistently-cased references to the same file. */
+    "declaration": true, /* Generates corresponding '.d.ts' file. */
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "paths": {
+      // "src/*": ["./src/*"],
+      "test/*": ["./test/*"],
+      "app/*": ["./app/*"],
+      "infra/*": ["./infra/*"],
+      "helpers/*": ["./helpers/*"],
+      "config/*": ["./config/*"],
+      "domain/*": ["./domain/*"],
+      "interfaces/*": ["./interfaces/*"],
+      // "routes/*": ["./interfaces/http/routes/*"],
+      // "controllers/*": ["./interfaces/http/controllers/*"],
+      // "middleware/*": ["./interfaces/http/middleware/*"],
+   },
+  },
+  "exclude": ["node_modules", "**/node_modules/*", "dist", "doc", "client"],
+   "include": [
+     "src/**/*.ts",
+     "src/**/*.js", "container.js",
+   ]
+ }
+
+
