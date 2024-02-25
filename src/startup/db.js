@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import env from '../config/config'
+import container from '../container';
 require("dotenv").config();
 
 module.exports = () => {
@@ -11,9 +12,9 @@ module.exports = () => {
       useUnifiedTopology: true,
       autoIndex: false
     });
-    if (connection) console.log("Connected to database successfully");
+    if (connection)  container.cradle.logger.info("Connected to mongodb database successfully");
   } catch (error) {
-    console.log("Could not connect to the database", error);
+    container.cradle.logger.error(`Could not connect to the database, ${error}`);
     process.exit(1);
   }
 };
