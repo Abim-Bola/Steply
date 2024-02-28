@@ -1,6 +1,6 @@
 import HttpStatus from "http-status-codes";
 import container from "container"
-import redis from "../startup/redis";
+import redis from "../../startup/redis";
 import Response from "helpers/response";
 export default class RedisClient {
   constructor() {
@@ -11,7 +11,7 @@ export default class RedisClient {
 
   async saveRedisCache(req, res, next, response){
     const key = `${req.baseUrl + "/" + container.cradle.currentUser.id}`;
-    const fieldsAdded = this.client.hSet(
+    this.client.hSet(
       key,
       'data',
       JSON.stringify(response)

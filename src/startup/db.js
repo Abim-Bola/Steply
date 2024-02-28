@@ -12,7 +12,7 @@ module.exports = () => {
       useUnifiedTopology: true,
       autoIndex: false
     });
-    if (connection)  container.cradle.logger.info("Connected to mongodb database successfully");
+    if (connection) container.cradle.logger.info("Connected to mongodb database successfully");
   } catch (error) {
     container.cradle.logger.error(`Could not connect to the database, ${error}`);
     process.exit(1);

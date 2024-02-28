@@ -1,5 +1,4 @@
 import winston, { format } from "winston";
-import expressWinston from "express-winston"
 
 /**
  * Log errors to a file named combined.log

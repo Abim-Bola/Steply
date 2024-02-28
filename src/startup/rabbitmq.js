@@ -13,7 +13,7 @@ async () => {
         container.cradle.logger.info("Rabbitmq connected Successfully")
         return { connectRabbitMQ, channel };
     } catch (error) {
-        console.error('Error connecting to RabbitMQ:', error);
+        container.cradle.logger.error(`Error connecting to RabbitMQ ${error}`)
         process.exit(1);
     }
 }
