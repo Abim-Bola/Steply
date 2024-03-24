@@ -9,6 +9,13 @@ export default class RedisClient {
     this.isClientConnected = true
   }
 
+  /**
+   * 
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   * @param {*} response 
+   */
   async saveRedisCache(req, res, next, response){
     const key = `${req.baseUrl + "/" + container.cradle.currentUser.id}`;
     this.client.hSet(
@@ -20,7 +27,7 @@ export default class RedisClient {
 
 
   /**
-   * Checks if data is in redis db and if not it hands over to the next call which fatches from persistent db.
+   * Checks if data is in redis db and if not it hands over to the next call which fetches from persistent db.
    * @returns {object}
    */
   async useRedisCache(req, res, next) {

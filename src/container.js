@@ -5,7 +5,7 @@
 */
 
 import { createContainer, InjectionMode, Lifetime, asClass, asValue } from 'awilix'
-import RedisClient from './services/redis'
+import RedisClient from './infra/services/redis'
 import logger from './startup/logger'
 const redisClient = new RedisClient
 const container = createContainer()
