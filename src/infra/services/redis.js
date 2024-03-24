@@ -1,7 +1,6 @@
-import { createClient } from "redis"
 import HttpStatus from "http-status-codes";
 import container from "container"
-import redis from "../startup/redis";
+import redis from "../../startup/redis";
 import Response from "helpers/response";
 export default class RedisClient {
   constructor() {
@@ -11,19 +10,15 @@ export default class RedisClient {
   }
 
   /**
-   * Checks if this client's connection to the Redis server is active.
-   * @returns {string}
+   * 
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   * @param {*} response 
    */
-  isAlive() {
-    const status = this.isClientConnected ? "Connected" : "Disconnected"
-    const message = `Redis is ${status}`
-    return console.log(message)
-  }
-
-
   async saveRedisCache(req, res, next, response){
-    const key = `${req.baseUrl + "///" + container.cradle.currentUser.id}`;
-    const fieldsAdded = this.client.hSet(
+    const key = `${req.baseUrl + "/" + container.cradle.currentUser.id}`;
+    this.client.hSet(
       key,
       'data',
       JSON.stringify(response)
@@ -32,11 +27,11 @@ export default class RedisClient {
 
 
   /**
-   * Checks if data is in redis db and if not it hands over to the next call which fatches from persistent db.
+   * Checks if data is in redis db and if not it hands over to the next call which fetches from persistent db.
    * @returns {object}
    */
   async useRedisCache(req, res, next) {
-    const key = `${req.baseUrl + "///" + container.cradle.currentUser.id}`;
+    const key = `${req.baseUrl + "/" + container.cradle.currentUser.id}`;
     // Check if data is in cache
     try {
       const result = await this.client.hGet(key, 'data');

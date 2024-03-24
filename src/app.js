@@ -2,24 +2,12 @@
 /* eslint-disable import/extensions */
 /* eslint-disable arrow-body-style */
 import "dotenv/config"
-import config from 'config'
 import express from "express";
-import { createContainer, asClass, InjectionMode, Lifetime, asFunction, asValue } from "awilix";
-import { createClient } from 'redis';
 import cors from "cors";
 import morgan from "morgan";
-import db from "./startup/db.js";
-import session from 'express-session';
-import connectRedis from 'connect-redis';
-import routes from "./interfaces/v1/router.js";
-import RedisClient from './services/redis.js';
+import rabbitmQ from 'startup/rabbitmq';
 import container from './container';
 
-
-//create a container file
-//do the same thing in app,
-//call the export to register new var
-//import the container and access the var. 
 const app = express();
 app.use((req, res, next) => {
   next();
@@ -27,10 +15,19 @@ app.use((req, res, next) => {
 require("./startup/db")();
 require("./interfaces/v1/router")(app);
 // eslint-disable-next-line import/extensions
- container.cradle.redisClient.isAlive(),
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-app.use(morgan('tiny'));
+
+ /**
+   * Only log error responses and send all logs to the same file winston sends logs
+   */
+app.use((req, res, next) => {
+  morgan('combined', {
+      skip: function (req, res) { return res.statusCode < 400; },
+      stream: { write: (message) => container.cradle.logger.info(message.trim()) } 
+  })(req, res, next);
+});
+
 
 const PORT = 6379
 
@@ -41,7 +38,7 @@ app.get("/", async (req, res) => {
 
 const port = 8000;
 app.listen(port, () => 
-console.log(`Listening on port ${port}...`),
+container.cradle.logger.info(`Listening on port ${port}...`)
 );
 app.use((err, req, res, next) => {
   return res.status(500).json({
