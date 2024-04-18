@@ -1,11 +1,11 @@
 
 import container from "container"
-import {connectRabbitMQ, channel } from "../../../startup/rabbitmq";
+import EmailService from "infra/services/email/EmailService"; 
+import rabbitMQSetup from "../../../startup/rabbitmq";
 
 
 export default class RabbitMQ {
   constructor() {
-    this.channel = channel;
   }
 
   /** This is where we pass our messages into a queue.
@@ -16,13 +16,19 @@ export default class RabbitMQ {
    */
 
   async publishInQueue(queueName, message) {
-    /**
-     * Work on adding dead letter exchange(DLX) so that unsuccessful queues can be stored and logged  
-     */
-    channel.assertQueue(queueName, { durable: true, maxLength: 7 });
-    message.publishedAt = new Date();
-    const convertMessageToJsonFormat = JSON.stringify(message);
-    return this.channel.sendToQueue(queueName, Buffer.from(convertMessageToJsonFormat));
+    try {
+      const { channel } = await rabbitMQSetup();
+      /**
+       * Work on adding dead letter exchange(DLX) so that unsuccessful queues can be stored and logged  
+       */
+      channel.assertQueue(queueName, { durable: true });
+      message.publishedAt = new Date();
+      const convertMessageToJsonFormat = JSON.stringify(message);
+      return channel.sendToQueue(queueName, Buffer.from(convertMessageToJsonFormat));
+    } catch (error) {
+      container.cradle.logger.error(`Could not publish message to queue, ${error}`);
+    }
+ 
   }
 
   /**
@@ -31,11 +37,19 @@ export default class RabbitMQ {
    * @param {*} message 
    * @returns 
    */
-  async consumeQueue(queueName, message) {
-    channel.assertQueue(queueName, { durable: true });
-    message.publishedAt = new Date();
-    const convertMessageToJsonFormat = JSON.stringify(message);
-    return this.channel.sendToQueue(queueName, Buffer.from(convertMessageToJsonFormat));
+  async consumeQueue(queueName) {
+    try {
+      const { connectRabbitMQ, channel } = await rabbitMQSetup();
+      channel.assertQueue(queueName, { durable: true });
+      channel.consume(queueName, message => {
+      const parseMessage = JSON.parse(message.content.toString());
+        EmailService.welcomeEmail(parseMessage)
+          channel.ack(message)
+      })
+    } catch (error) {
+      container.cradle.logger.error(`Could not consume message to from queue, ${error}`);
+    }
+  
   }
 
   //  async  createExchange(

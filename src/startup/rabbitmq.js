@@ -1,21 +1,20 @@
 import container from 'container';
-
+import { QueueTypes } from 'infra/services/queue/queues';
+import EmailQueueConsumer from 'infra/services/queue/email.consumer'
 const amqp = require('amqplib');
 
-let connectRabbitMQ;
-
-(
-async () => {
+const rabbitMQSetup = async () => {
     try {
-        connectRabbitMQ = await amqp.connect('amqp://localhost');
+        const connectRabbitMQ = await amqp.connect('amqp://localhost');
         const channel = await connectRabbitMQ.createChannel();
+        Object.keys(QueueTypes).forEach(queue => {
+            channel.assertQueue(queue);
+        });
         container.cradle.logger.info("Rabbitmq connected Successfully")
         return { connectRabbitMQ, channel };
     } catch (error) {
         container.cradle.logger.error(`Error connecting to RabbitMQ ${error}`)
         process.exit(1);
     }
-}
-)();
-
-export default  connectRabbitMQ ;
+};
+export default rabbitMQSetup;

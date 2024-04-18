@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime-corejs3": "^7.16.0",
+    "@sendgrid/mail": "^8.1.1",
     "amqplib": "^0.10.3",
     "awilix": "^9.0.0",
     "babel-eslint": "^10.1.0",
