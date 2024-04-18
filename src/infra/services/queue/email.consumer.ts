@@ -12,7 +12,6 @@ constructor (){
 }
 
 async process (message){
-    console.log("hehe")
     const { recipient, type } = message;
     container.cradle.RabbitMQClass.consumeQueue(QueueTypes.EMAIL_SERVICE);
      await EmailService.welcomeEmail(recipient);
