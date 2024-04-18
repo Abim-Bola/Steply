@@ -2,12 +2,12 @@ import BaseRepository from "infra/repositories/BaseRepository"
 import { sanitize } from "helpers/sanitize"
 import passwordService from "helpers/password"
 import ConflictError from "interfaces/errors/ConflictError"
-import HttpStatus from "http-status-codes";
+import HttpStatus from "http-status-codes"
 import ResourceNotFoundError from "interfaces/errors/ResourceNotFoundError"
-import Password from "helpers/password";
-import JWT from "helpers/jwt";
-import container from "container";
-import { QueueTypes } from "infra/services/queue/queues";
+import Password from "helpers/password"
+import JWT from "helpers/jwt"
+import container from "container"
+import { QueueTypes } from "infra/services/queue/queues.enum"
 import InvalidPayloadError from "interfaces/errors/InvalidPayloadError"
 import User from "infra/database/models/user"
 
@@ -18,20 +18,28 @@ class UserRepository extends BaseRepository {
   }
 
   async signup(payload) {
-    const findUser = await this.find({ email: payload.email }, { email: 1 }, { lean: true })
-    if (findUser) {
-      return new ConflictError("User already exists")
+    try {
+      const findUser = await this.find({ email: payload.email }, { email: 1 }, { lean: true })
+      if (findUser) {
+        return new ConflictError("User already exists")
+      }
+      const passwordStrength = await passwordService.passwordStrengthChecker(payload.password, payload.first_name)
+      if (passwordStrength.score < 3) {
+        return new InvalidPayloadError("Weak Password")
+      }
+      const saveUser = await this.create({
+        ...payload,
+      })
+      container.cradle.RabbitMQClass.publishInQueue(QueueTypes.EMAIL_SERVICE, {
+        recipient: payload.email,
+        emailType: "welcome",
+      })
+      // saveUser.testing()
+      return sanitize(saveUser)
+    } catch (error) {
+      container.cradle.logger.error(`User unable to signup, ${error}`)
+      throw error
     }
-    const passwordStrength = await passwordService.passwordStrengthChecker(payload.password, payload.first_name)
-    if (passwordStrength.score < 3) {
-      return new InvalidPayloadError("Weak Password")
-    }
-    const saveUser = await this.create({
-      ...payload,
-    })
-    container.cradle.RabbitMQClass.publishInQueue(QueueTypes.EMAIL_SERVICE, {recipient: payload.email, emailType: 'welcome'} )
-    // saveUser.testing()
-    return sanitize(saveUser)
   }
 
   async login(payload) {
@@ -41,13 +49,14 @@ class UserRepository extends BaseRepository {
       if (!findUser) {
         throw new ResourceNotFoundError("User does not exist")
       }
-      const findpassword = await Password.compare(password, findUser.password);
-      if(!findpassword) {
-        throw new  InvalidPayloadError("Wrong password", HttpStatus.UNAUTHORIZED);
+      const findpassword = await Password.compare(password, findUser.password)
+      if (!findpassword) {
+        throw new InvalidPayloadError("Wrong password", HttpStatus.UNAUTHORIZED)
       }
       const token = JWT.generateAuthToken(findUser)
-      return {token}
+      return { token }
     } catch (error) {
+      container.cradle.logger.error(`User unable to login, ${error}`)
       throw error
     }
   }

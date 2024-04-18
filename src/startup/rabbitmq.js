@@ -1,5 +1,5 @@
 import container from 'container';
-import { QueueTypes } from 'infra/services/queue/queues';
+import { QueueTypes } from 'infra/services/queue/queues.enum';
 import EmailQueueConsumer from 'infra/services/queue/email.consumer'
 const amqp = require('amqplib');
 

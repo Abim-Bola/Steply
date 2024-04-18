@@ -5,7 +5,7 @@ import "dotenv/config"
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { QueueTypes } from 'infra/services/queue/queues';
+import {startAllConsumers} from 'infra/services/queue/index'
 import rabbitMQSetup from 'startup/rabbitmq';
 import container from './container';
 
@@ -19,7 +19,7 @@ require("./interfaces/v1/router")(app);
 // eslint-disable-next-line import/extensions
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-container.cradle.RabbitMQClass.consumeQueue(QueueTypes.EMAIL_SERVICE);
+startAllConsumers()
  /**
    * Only log error responses and send all logs to the same file winston sends logs
    */

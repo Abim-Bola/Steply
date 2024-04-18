@@ -31,26 +31,7 @@ export default class RabbitMQ {
  
   }
 
-  /**
-   * 
-   * @param {*} queueName 
-   * @param {*} message 
-   * @returns 
-   */
-  async consumeQueue(queueName) {
-    try {
-      const { connectRabbitMQ, channel } = await rabbitMQSetup();
-      channel.assertQueue(queueName, { durable: true });
-      channel.consume(queueName, message => {
-      const parseMessage = JSON.parse(message.content.toString());
-        EmailService.welcomeEmail(parseMessage)
-          channel.ack(message)
-      })
-    } catch (error) {
-      container.cradle.logger.error(`Could not consume message to from queue, ${error}`);
-    }
   
-  }
 
   //  async  createExchange(
   //   channel: amqp.ConfirmChannel,
