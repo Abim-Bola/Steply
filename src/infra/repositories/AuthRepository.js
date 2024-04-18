@@ -6,6 +6,8 @@ import HttpStatus from "http-status-codes";
 import ResourceNotFoundError from "interfaces/errors/ResourceNotFoundError"
 import Password from "helpers/password";
 import JWT from "helpers/jwt";
+import container from "container";
+import { QueueTypes } from "infra/services/queue/queues";
 import InvalidPayloadError from "interfaces/errors/InvalidPayloadError"
 import User from "infra/database/models/user"
 
@@ -27,6 +29,7 @@ class UserRepository extends BaseRepository {
     const saveUser = await this.create({
       ...payload,
     })
+    container.cradle.RabbitMQClass.publishInQueue(QueueTypes.EMAIL_SERVICE, {recipient: payload.email, emailType: 'welcome'} )
     // saveUser.testing()
     return sanitize(saveUser)
   }

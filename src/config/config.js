@@ -4,6 +4,7 @@ process.env.NODE_ENV = "development";
 const env = {
   MONGO_DB_URL: process.env.MONGO_DB_URL,
   JWT_SECRET: process.env.JWT_SECRET,
+  EMAIL_API: process.env.EMAIL_API,
   JWT_ISSUER: process.env.JWT_ISSUER,
   JWT_AUDIENCE: process.env.JWT_AUDIENCE,
   getEnv() {
@@ -12,13 +13,16 @@ const env = {
       this.JWT_SECRET = process.env.JWT_SECRET;
       this.JWT_ISSUER = process.env.JWT_ISSUER,
       this.JWT_AUDIENCE = process.env.JWT_AUDIENCE
+      this.EMAIL_API = process.env.EMAIL_API
     } else {
       //To be defined in heroku or github secrets
       this.MONGO_DB_URL = process.env.MONGO_DB_URL_PRODUCTION;
       this.JWT_SECRET = process.env.JWT_SECRET;
+      this.EMAIL_API = process.env.EMAIL_API
     }
     return {
       MONGO_DB_URL: this.MONGO_DB_URL,
+      EMAIL_API: this.EMAIL_API,
       JWT_SECRET: this.JWT_SECRET,
       JWT_ISSUER: this.JWT_ISSUER,
       JWT_AUDIENCE: this.JWT_AUDIENCE

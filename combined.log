@@ -48,3 +48,15 @@
 {"level":"info","message":"Listening on port 8000..."}
 {"level":"info","message":"Reddis connected Successfully"}
 {"level":"info","message":"Rabbitmq connected Successfully"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ AggregateError"}
+{"level":"error","message":"Error connecting to RabbitMQ TypeError: Cannot read properties of undefined (reading 'process')"}
+{"level":"error","message":"Error connecting to RabbitMQ TypeError: email_consumer_1.default.process is not a constructor"}
